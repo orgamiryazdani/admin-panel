@@ -1,9 +1,9 @@
 import logo from "@assets/images/logo.svg";
-import { useForm } from "react-hook-form";
-import { Link, useActionData, useRouteError, useNavigation, useSubmit, useNavigate } from "react-router-dom";
-import { httpService } from "../../../core/http-service";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { Link, useActionData, useNavigate, useNavigation, useRouteError, useSubmit } from "react-router-dom";
+import { httpService } from "@core/http-service";
 
 const Register = () => {
     const {
@@ -12,7 +12,6 @@ const Register = () => {
         watch,
         formState: { errors },
     } = useForm();
-
     const { t } = useTranslation();
 
     const submitForm = useSubmit();
@@ -22,16 +21,18 @@ const Register = () => {
         submitForm(userData, { method: 'post' });
     }
     const navigation = useNavigation();
-    const isSubmiting = navigation.state !== 'idle';
+    const isSubmitting = navigation.state !== 'idle';
+
     const routeErrors = useRouteError();
     const isSuccessOperation = useActionData();
+
     const navigate = useNavigate();
 
     useEffect(() => {
         if (isSuccessOperation) {
             setTimeout(() => {
-                navigate('/login')
-            }, 2000);
+                navigate('/login');
+            }, 3000);
         }
     }, [isSuccessOperation])
 
@@ -45,6 +46,7 @@ const Register = () => {
                 </p>
                 <p className="lead">
                     {t('register.alreadyRegistered')}
+                    &nbsp;
                     <Link to="/login" className="me-2">
                         {t('register.signin')}
                     </Link>
@@ -56,12 +58,10 @@ const Register = () => {
                     <div className="m-sm-4">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="mb-3">
-                                <label className="form-label">
-                                    {t('register.mobile')}
-                                </label>
+                                <label className="form-label">{t('register.mobile')}</label>
                                 <input
                                     {...register("mobile", {
-                                        required: t('register.validation.mobileRequired'),
+                                        required: true,
                                         minLength: 11,
                                         maxLength: 11
                                     })}
@@ -70,7 +70,7 @@ const Register = () => {
                                 />
                                 {errors.mobile && errors.mobile.type === "required" && (
                                     <p className="text-danger small fw-bolder mt-1">
-                                        {errors.mobile?.message}
+                                        {t('register.validation.mobileRequired')}
                                     </p>
                                 )}
                                 {errors.mobile && (errors.mobile.type === "minLength" || errors.mobile.type === 'maxLength') && (
@@ -82,14 +82,14 @@ const Register = () => {
                             <div className="mb-3">
                                 <label className="form-label">{t('register.password')}</label>
                                 <input
-                                    {...register("password", { required: t('register.validation.passwordRequired') })}
+                                    {...register("password", { required: true })}
                                     className={`form-control form-control-lg ${errors.password && "is-invalid"
                                         }`}
                                     type="password"
                                 />
-                                {errors.password && (
+                                {errors.password && (errors.password.type === 'required') && (
                                     <p className="text-danger small fw-bolder mt-1">
-                                        {errors.password?.message}
+                                        {t('register.validation.passwordRequired')}
                                     </p>
                                 )}
                             </div>
@@ -97,7 +97,7 @@ const Register = () => {
                                 <label className="form-label">{t('register.repeatPassword')}</label>
                                 <input
                                     {...register("confirmPassword", {
-                                        required: t('register.validation.repeatPasswordRequired'),
+                                        required: true,
                                         validate: (value) => {
                                             if (watch("password") !== value) {
                                                 return t('register.validation.notMatching');
@@ -111,7 +111,7 @@ const Register = () => {
                                 {errors.confirmPassword &&
                                     errors.confirmPassword.type === "required" && (
                                         <p className="text-danger small fw-bolder mt-1">
-                                            {errors.confirmPassword?.message}
+                                            {t('register.validation.repeatPasswordRequired')}
                                         </p>
                                     )}
                                 {errors.confirmPassword &&
@@ -122,21 +122,21 @@ const Register = () => {
                                     )}
                             </div>
                             <div className="text-center mt-3">
-                                <button type="submit" disabled={isSubmiting} className="btn btn-lg btn-primary">
-                                    {t('register.register')}
+                                <button type="submit" disabled={isSubmitting} className="btn btn-lg btn-primary">
+                                    {isSubmitting ? t('register.saving') : t('register.register')}
                                 </button>
                             </div>
                             {
-                                isSuccessOperation && (
-                                    <div className="alert alert-success text-success p-2 mt-3">{t('register.successOperation')}</div>
+                                routeErrors && (
+                                    <div className="alert alert-danger text-danger p-2 mt-3">
+                                        {routeErrors.response?.data.map((error, index) => <p key={index} className="mb-0">{t(`register.validation.${error.code}`)}</p>)}
+                                    </div>
                                 )
                             }
                             {
-                                routeErrors && (
-                                    <div className="alert alert-danger text-danger p-2 mt-3">
-                                        {
-                                            routeErrors.response?.data.map(error => <p key={error.description} className="mb-0">{error.description}</p>)
-                                        }
+                                isSuccessOperation && (
+                                    <div className="alert alert-success text-success p-2 mt-3">
+                                        {t('register.successOperation')}
                                     </div>
                                 )
                             }
@@ -146,9 +146,7 @@ const Register = () => {
             </div>
         </>
     );
-}
-
-export default Register;
+};
 
 export async function registerAction({ request }) {
     const formData = await request.formData();
@@ -156,3 +154,5 @@ export async function registerAction({ request }) {
     const response = await httpService.post('/Users', data);
     return response.status === 200;
 }
+
+export default Register;
