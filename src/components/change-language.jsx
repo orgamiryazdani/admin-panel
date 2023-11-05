@@ -1,4 +1,4 @@
-import usFlag from '@assets/images/us.jpg';
+import usFlag from '@assets/images/us.png';
 import faFlag from '@assets/images/fa.png';
 import { useEffect, useRef, useState } from 'react';
 import { useAppContext } from '../contexts/app/app-context';
