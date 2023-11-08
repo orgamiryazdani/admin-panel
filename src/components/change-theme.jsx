@@ -1,6 +1,6 @@
 import { useAppContext } from "../contexts/app/app-context";
 
-function changeTheme() {
+function ChangeTheme() {
     const { theme, changeTheme } = useAppContext();
 
     const changeThemeHandler = () => {
@@ -14,4 +14,4 @@ function changeTheme() {
     )
 }
 
-export default changeTheme
+export default ChangeTheme
