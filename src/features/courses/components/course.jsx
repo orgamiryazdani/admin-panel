@@ -1,4 +1,6 @@
-const Course = ({ title, coverImageUrl, courseLevel, description, duration, numOfReviews }) => {
+import { Link } from "react-router-dom";
+
+const Course = ({ id, title, coverImageUrl, courseLevel, description, duration, numOfReviews }) => {
     return (
         <div className="card">
             <img src={coverImageUrl} className="card-img-top" />
@@ -6,7 +8,11 @@ const Course = ({ title, coverImageUrl, courseLevel, description, duration, numO
                 <div className="badge bg-primary my-2 fw-bolder">
                     {courseLevel}
                 </div>
-                <h4 className="mb-0">{title}</h4>
+                <h4 className="mb-0">
+                    <Link to={`/courses/${id}`}>
+                        {title}
+                    </Link>
+                </h4>
             </div>
             <div className="card-body px-4 pt-2">
                 <p className="text-truncate-3">{description}</p>
