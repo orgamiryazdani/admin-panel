@@ -6,11 +6,15 @@ import Courses, { coursesLoader } from "./pages/Courses";
 import MainLayout from "./layout/mainLayout/main-layout";
 import CourseCategories, { categoriesLoader } from "./pages/course-category";
 import CourseDetails, { courseDetailsLoader } from "./features/courses/components/course-datails";
+import { CategoryProvider } from "./features/categories/category-context";
+import NotFound from "./pages/not-found";
+import UnhandledException from "./pages/unhandled-exception";
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
+    errorElement: <UnhandledException />,
     children: [{
       element: <Courses />,
       index: true,
@@ -18,7 +22,11 @@ const router = createBrowserRouter([
     },
     {
       path: 'course-categories',
-      element: <CourseCategories />,
+      element: (
+        <CategoryProvider>
+          <CourseCategories />
+        </CategoryProvider>
+      ),
       loader: categoriesLoader
     },
     {
@@ -45,6 +53,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '*',
+    element: <NotFound />
+  }
 ]);
 
 
