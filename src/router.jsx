@@ -1,40 +1,44 @@
 import { createBrowserRouter } from "react-router-dom";
-import Login, { loginAction } from "./features/identity/components/login";
-import Register, { registerAction } from "./features/identity/components/register";
-import IdentityLayout from "./layout/identity-layout";
-import Courses, { coursesLoader } from "./pages/Courses";
-import MainLayout from "./layout/mainLayout/main-layout";
-import CourseCategories, { categoriesLoader } from "./pages/course-category";
-import CourseDetails, { courseDetailsLoader } from "./features/courses/components/course-datails";
+import Login, { loginAction } from "./features/Identity/components/login/login";
+import Register from "./features/Identity/components/register/register";
+import IdentityLayout from "./layouts/identity-layout";
+import { registerAction } from "./features/Identity/components/register/register";
+import MainLayout from "./layouts/mainLayout/main-layout";
+import Courses, { coursesLoader } from "./pages/courses";
+import CourseCategories, { categoriesLoader } from "./pages/course-categories";
+import CourseDetails, {
+  courseDetailsLoader,
+} from "./features/courses/components/course-details";
 import { CategoryProvider } from "./features/categories/category-context";
 import NotFound from "./pages/not-found";
 import UnhandledException from "./pages/unhandled-exception";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <MainLayout />,
-    errorElement: <UnhandledException />,
-    children: [{
-      element: <Courses />,
-      index: true,
-      loader: coursesLoader
-    },
-    {
-      path: 'course-categories',
-      element: (
-        <CategoryProvider>
-          <CourseCategories />
-        </CategoryProvider>
-      ),
-      loader: categoriesLoader
-    },
-    {
-      path: 'courses/:id',
-      element: <CourseDetails />,
-      loader: courseDetailsLoader
-    }
-    ]
+    errorElement: <UnhandledException/>,
+    children: [
+      {
+        index: true,
+        element: <Courses />,
+        loader: coursesLoader,
+      },
+      {
+        path: "courses/:id",
+        element: <CourseDetails />,
+        loader: courseDetailsLoader,
+      },
+      {
+        path: "course-categories",
+        element: (
+          <CategoryProvider>
+            <CourseCategories />
+          </CategoryProvider>
+        ),
+        loader: categoriesLoader,
+      },
+    ],
   },
   {
     element: <IdentityLayout />,
@@ -54,10 +58,10 @@ const router = createBrowserRouter([
     ],
   },
   {
+    
     path: '*',
-    element: <NotFound />
+    element: <NotFound/>
   }
 ]);
 
-
-export default router
+export default router;
