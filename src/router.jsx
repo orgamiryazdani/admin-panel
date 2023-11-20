@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login, { loginAction } from "./features/identity/components/login";
-import Register from "./features/Identity/components/register";
+import Register from "./features/identity/components/register";
 import IdentityLayout from "./layout/identity-layout";
-import { registerAction } from "./features/Identity/components/register";
+import { registerAction } from "./features/identity/components/register";
 import MainLayout from "./layout/mainLayout/main-layout";
 import Courses, { coursesLoader } from "./pages/courses";
 import CourseCategories, { categoriesLoader } from "./pages/course-category";
