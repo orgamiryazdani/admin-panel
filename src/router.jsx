@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import Login, { loginAction } from "./features/Identity/components/login";
+import Login, { loginAction } from "./features/identity/components/login";
 import Register from "./features/Identity/components/register";
 import IdentityLayout from "./layout/identity-layout";
 import { registerAction } from "./features/Identity/components/register";
