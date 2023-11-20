@@ -1,14 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
-import Login, { loginAction } from "./features/Identity/components/login/login";
-import Register from "./features/Identity/components/register/register";
-import IdentityLayout from "./layouts/identity-layout";
-import { registerAction } from "./features/Identity/components/register/register";
-import MainLayout from "./layouts/mainLayout/main-layout";
+import Login, { loginAction } from "./features/Identity/components/login";
+import Register from "./features/Identity/components/register";
+import IdentityLayout from "./layout/identity-layout";
+import { registerAction } from "./features/Identity/components/register";
+import MainLayout from "./layout/mainLayout/main-layout";
 import Courses, { coursesLoader } from "./pages/courses";
-import CourseCategories, { categoriesLoader } from "./pages/course-categories";
+import CourseCategories, { categoriesLoader } from "./pages/course-category";
 import CourseDetails, {
   courseDetailsLoader,
-} from "./features/courses/components/course-details";
+} from "./features/courses/components/course-datails";
 import { CategoryProvider } from "./features/categories/category-context";
 import NotFound from "./pages/not-found";
 import UnhandledException from "./pages/unhandled-exception";
